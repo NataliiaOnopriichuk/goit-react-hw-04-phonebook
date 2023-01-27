@@ -1,12 +1,13 @@
 import s from './ContactItem.module.css';
 import { useContext } from 'react';
 import { IsContactsContext } from 'index';
+import PropTypes from 'prop-types';
 
-export const ContactItem = () => {
+export const ContactItem = ({ name, number, id }) => {
   const { contacts, setContacts } = useContext(IsContactsContext);
 
-  return contacts.map(({ name, number, id }) => (
-    <li key={id} className={s.listItem}>
+  return (
+    <li className={s.listItem}>
       <p>
         {name}: {number}
       </p>
@@ -20,5 +21,11 @@ export const ContactItem = () => {
         Delete
       </button>
     </li>
-  ));
+  );
+};
+
+ContactItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };

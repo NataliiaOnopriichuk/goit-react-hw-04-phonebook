@@ -1,62 +1,67 @@
-import { Component } from 'react';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
+import { useContext, useMemo, useState } from 'react';
+// import { IsContactsContext } from 'index';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export const App = () => {
+  const [filter, setFilter] = useState('');
 
-  handleChangeFilter = e => {
+  // const { contacts, setContacts } = useContext(IsContactsContext);
+
+  const handleChangeFilter = e => {
     const { value } = e.target;
-    this.setState({ filter: value });
+    setFilter(value);
   };
 
-  filterContactsByName = () => {
-    const { contacts, filter } = this.state;
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase().trim())
-    );
-  };
+  // const filteredTodo = useMemo(() => {
+  //   setContacts(() => {
+  //     return contacts.filter(({ name }) =>
+  //       name.toLowerCase().includes(filter.toLowerCase().trim())
+  //     );
+  //   });
+  // }, [contacts, filter]);
 
-  componentDidMount() {
-    const localStorageData = JSON.parse(localStorage.getItem('contacts'));
+  return (
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontSize: 30,
+        color: '#010101',
+      }}
+    >
+      <h1>Phonebook</h1>
+      <ContactForm />
 
-    if (localStorageData) {
-      this.setState({ contacts: localStorageData });
-    }
-  }
+      <h2>Contacts</h2>
+      <Filter nameFilter={filter} handleChangeFilter={handleChangeFilter} />
+      <ContactList />
+    </div>
+  );
+};
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+// export class App extends Component {
 
-  render() {
-    return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          fontSize: 30,
-          color: '#010101',
-        }}
-      >
-        <h1>Phonebook</h1>
-        <ContactForm />
+//   filterContactsByName = () => {
+//     const { contacts, filter } = this.state;
+//     return contacts.filter(({ name }) =>
+//       name.toLowerCase().includes(filter.toLowerCase().trim())
+//     );
+//   };
 
-        <h2>Contacts</h2>
-        <Filter
-          nameFilter={this.state.filter}
-          handleChangeFilter={this.handleChangeFilter}
-        />
-        <ContactList />
-      </div>
-    );
-  }
-}
+//   componentDidMount() {
+//     const localStorageData = JSON.parse(localStorage.getItem('contacts'));
+
+//     if (localStorageData) {
+//       this.setState({ contacts: localStorageData });
+//     }
+//   }
+
+//   componentDidUpdate(prevProps, prevState) {
+//     if (prevState.contacts !== this.state.contacts) {
+//       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+//     }
+//   }
