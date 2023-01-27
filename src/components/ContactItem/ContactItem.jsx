@@ -1,33 +1,24 @@
 import s from './ContactItem.module.css';
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { IsContactsContext } from 'index';
 
-export const ContactItem = ({ contacts, removeContact }) => {
-  return contacts.map(({ name, phoneNumber, id }) => (
+export const ContactItem = () => {
+  const { contacts, setContacts } = useContext(IsContactsContext);
+
+  return contacts.map(({ name, number, id }) => (
     <li key={id} className={s.listItem}>
       <p>
-        {name}: {phoneNumber}
+        {name}: {number}
       </p>
       <button
         type="button"
         className={s.btnDelete}
         onClick={() => {
-          removeContact(id);
+          setContacts(contacts.filter(el => el.id !== id));
         }}
       >
         Delete
       </button>
     </li>
   ));
-};
-
-ContactItem.propTypes = {
-  removeContact: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      name: PropTypes.string.isRequired,
-      phoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-    })
-  ).isRequired,
 };

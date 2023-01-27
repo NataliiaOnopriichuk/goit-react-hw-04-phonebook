@@ -1,87 +1,67 @@
-import { Component } from 'react';
+import { memo, useContext, useState } from 'react';
 import { nanoid } from 'nanoid';
 import s from './ContactForm.module.css';
-import PropTypes from 'prop-types';
+import { IsContactsContext } from 'index';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export const ContactForm = memo(() => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const { contacts, setContacts } = useContext(IsContactsContext);
+
+  const options = { name: setName, number: setNumber };
+
+  const addUserInfoToForm = e => {
+    const { name, value } = e.target;
+    options[name](value);
   };
 
-  addUserName = e => {
-    this.setState({ name: e.target.value });
+  const handleReset = () => {
+    setName('');
+    setNumber('');
   };
 
-  addUserPhone = e => {
-    this.setState({ number: e.target.value });
-  };
-
-  handleReset = () => {
-    this.setState({ name: '', number: '' });
-  };
-
-  addContact = e => {
+  const addContact = e => {
     e.preventDefault();
 
     if (
-      this.props.contacts.some(
-        ({ name }) =>
-          name.toLowerCase().trim() === this.state.name.toLowerCase().trim()
+      contacts.some(
+        el => el.name.toLowerCase().trim() === name.toLowerCase().trim()
       )
     )
-      return alert(`${this.state.name} is already in contacts`);
+      return alert(`${name} is already in contacts`);
 
-    this.props.onAddContact({
-      name: this.state.name,
-      phoneNumber: this.state.number,
-      id: nanoid(),
-    });
-
-    this.handleReset();
+    setContacts(prev => [...prev, { name, number, id: nanoid() }]);
+    handleReset();
   };
 
-  render() {
-    return (
-      <form className={s.form} onSubmit={this.addContact}>
-        <label className={s.label}>
-          Name
-          <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            onChange={this.addUserName}
-          />
-        </label>
-        <label className={s.label}>
-          Number
-          <input
-            type="tel"
-            name="number"
-            value={this.state.number}
-            onChange={this.addUserPhone}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-        </label>
-        <button type="submit">Add contact</button>
-      </form>
-    );
-  }
-}
-
-ContactForm.propTypes = {
-  onAddContact: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      name: PropTypes.string.isRequired,
-      phoneNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-    })
-  ).isRequired,
-};
+  return (
+    <form className={s.form} onSubmit={addContact}>
+      <label className={s.label}>
+        Name
+        <input
+          type="text"
+          name="name"
+          value={name}
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+          onChange={addUserInfoToForm}
+        />
+      </label>
+      <label className={s.label}>
+        Number
+        <input
+          type="tel"
+          name="number"
+          value={number}
+          onChange={addUserInfoToForm}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        />
+      </label>
+      <button type="submit">Add contact</button>
+    </form>
+  );
+});

@@ -9,10 +9,6 @@ export class App extends Component {
     filter: '',
   };
 
-  addContactToList = newUser => {
-    this.setState(prev => ({ contacts: [...prev.contacts, newUser] }));
-  };
-
   handleChangeFilter = e => {
     const { value } = e.target;
     this.setState({ filter: value });
@@ -23,12 +19,6 @@ export class App extends Component {
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase().trim())
     );
-  };
-
-  removeContact = contactId => {
-    this.setState(prev => ({
-      contacts: prev.contacts.filter(({ id }) => id !== contactId),
-    }));
   };
 
   componentDidMount() {
@@ -46,7 +36,6 @@ export class App extends Component {
   }
 
   render() {
-    const filteredContacts = this.filterContactsByName();
     return (
       <div
         style={{
@@ -59,20 +48,14 @@ export class App extends Component {
         }}
       >
         <h1>Phonebook</h1>
-        <ContactForm
-          onAddContact={this.addContactToList}
-          contacts={this.state.contacts}
-        />
+        <ContactForm />
 
         <h2>Contacts</h2>
         <Filter
           nameFilter={this.state.filter}
           handleChangeFilter={this.handleChangeFilter}
         />
-        <ContactList
-          contacts={filteredContacts}
-          removeContact={this.removeContact}
-        />
+        <ContactList />
       </div>
     );
   }
