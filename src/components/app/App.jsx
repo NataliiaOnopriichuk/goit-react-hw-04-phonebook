@@ -2,25 +2,22 @@ import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { useContext, useMemo, useState } from 'react';
-// import { IsContactsContext } from 'index';
+import { IsContactsContext } from 'index';
 
 export const App = () => {
   const [filter, setFilter] = useState('');
-
-  // const { contacts, setContacts } = useContext(IsContactsContext);
+  const { contacts } = useContext(IsContactsContext);
 
   const handleChangeFilter = e => {
     const { value } = e.target;
     setFilter(value);
   };
 
-  // const filteredTodo = useMemo(() => {
-  //   setContacts(() => {
-  //     return contacts.filter(({ name }) =>
-  //       name.toLowerCase().includes(filter.toLowerCase().trim())
-  //     );
-  //   });
-  // }, [contacts, filter]);
+  const filterContactsByName = useMemo(() => {
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase().trim())
+    );
+  }, [contacts, filter]);
 
   return (
     <div
@@ -38,19 +35,10 @@ export const App = () => {
 
       <h2>Contacts</h2>
       <Filter nameFilter={filter} handleChangeFilter={handleChangeFilter} />
-      <ContactList />
+      <ContactList contacts={filterContactsByName} />
     </div>
   );
 };
-
-// export class App extends Component {
-
-//   filterContactsByName = () => {
-//     const { contacts, filter } = this.state;
-//     return contacts.filter(({ name }) =>
-//       name.toLowerCase().includes(filter.toLowerCase().trim())
-//     );
-//   };
 
 //   componentDidMount() {
 //     const localStorageData = JSON.parse(localStorage.getItem('contacts'));

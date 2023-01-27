@@ -1,11 +1,8 @@
 import { ContactItem } from '../ContactItem/ContactItem';
 import s from './ContactList.module.css';
-import { useContext } from 'react';
-import { IsContactsContext } from 'index';
+import PropTypes from 'prop-types';
 
-export const ContactList = () => {
-  const { contacts } = useContext(IsContactsContext);
-
+export const ContactList = ({ contacts }) => {
   return (
     <ul className={s.list}>
       {contacts.map(item => (
@@ -13,4 +10,8 @@ export const ContactList = () => {
       ))}
     </ul>
   );
+};
+
+ContactList.propTypes = {
+  contacts: PropTypes.array.isRequired,
 };
