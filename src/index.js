@@ -6,7 +6,7 @@ import './index.css';
 export const IsContactsContext = createContext();
 
 const IsContactsContextProvider = ({ children }) => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts')) ?? []);
   return (
     <IsContactsContext.Provider
       value={{ contacts, setContacts}}

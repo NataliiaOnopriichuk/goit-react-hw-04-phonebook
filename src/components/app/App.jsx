@@ -1,12 +1,16 @@
 import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import { IsContactsContext } from 'index';
 
 export const App = () => {
   const [filter, setFilter] = useState('');
   const { contacts } = useContext(IsContactsContext);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleChangeFilter = e => {
     const { value } = e.target;
@@ -39,17 +43,3 @@ export const App = () => {
     </div>
   );
 };
-
-//   componentDidMount() {
-//     const localStorageData = JSON.parse(localStorage.getItem('contacts'));
-
-//     if (localStorageData) {
-//       this.setState({ contacts: localStorageData });
-//     }
-//   }
-
-//   componentDidUpdate(prevProps, prevState) {
-//     if (prevState.contacts !== this.state.contacts) {
-//       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-//     }
-//   }
