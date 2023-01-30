@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { App } from 'components/app/App';
 import './index.css';
 
-export const IsContactsContext = createContext();
+export const ContactsContext = createContext();
 
 const IsContactsContextProvider = ({ children }) => {
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts')) ?? []);
   return (
-    <IsContactsContext.Provider
+    <ContactsContext.Provider
       value={{ contacts, setContacts}}
     >
       {children}
-    </IsContactsContext.Provider>
+    </ContactsContext.Provider>
   );
 }
 

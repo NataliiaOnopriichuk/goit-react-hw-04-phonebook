@@ -1,10 +1,10 @@
 import React from 'react';
-import s from './Filter.module.css';
+import css from './Filter.module.css';
 import PropTypes from 'prop-types';
 
 export const Filter = ({ nameFilter, handleChangeFilter }) => {
   return (
-    <label className={s.label}>
+    <label className={css.label}>
       Find contacts by name
       <input
         type="text"

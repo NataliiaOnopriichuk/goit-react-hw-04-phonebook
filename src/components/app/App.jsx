@@ -2,18 +2,18 @@ import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { useContext, useMemo, useState, useEffect } from 'react';
-import { IsContactsContext } from 'index';
+import { ContactsContext } from 'index';
 
 export const App = () => {
   const [filter, setFilter] = useState('');
-  const { contacts } = useContext(IsContactsContext);
+  const { contacts } = useContext(ContactsContext);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const handleChangeFilter = e => {
-    const { value } = e.target;
+  const handleChangeFilter = event => {
+    const { value } = event.target;
     setFilter(value);
   };
 

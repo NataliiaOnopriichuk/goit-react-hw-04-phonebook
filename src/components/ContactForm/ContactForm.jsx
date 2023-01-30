@@ -1,18 +1,18 @@
 import { memo, useContext, useState } from 'react';
 import { nanoid } from 'nanoid';
-import s from './ContactForm.module.css';
-import { IsContactsContext } from 'index';
+import css from './ContactForm.module.css';
+import { ContactsContext } from 'index';
 
 export const ContactForm = memo(() => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const { contacts, setContacts } = useContext(IsContactsContext);
+  const { contacts, setContacts } = useContext(ContactsContext);
 
   const options = { name: setName, number: setNumber };
 
-  const addUserInfoToForm = e => {
-    const { name, value } = e.target;
+  const addUserInfoToForm = event => {
+    const { name, value } = event.target;
     options[name](value);
   };
 
@@ -21,8 +21,8 @@ export const ContactForm = memo(() => {
     setNumber('');
   };
 
-  const addContact = e => {
-    e.preventDefault();
+  const addContact = event => {
+    event.preventDefault();
 
     if (
       contacts.some(
@@ -36,8 +36,8 @@ export const ContactForm = memo(() => {
   };
 
   return (
-    <form className={s.form} onSubmit={addContact}>
-      <label className={s.label}>
+    <form className={css.form} onSubmit={addContact}>
+      <label className={css.label}>
         Name
         <input
           type="text"
@@ -49,7 +49,7 @@ export const ContactForm = memo(() => {
           onChange={addUserInfoToForm}
         />
       </label>
-      <label className={s.label}>
+      <label className={css.label}>
         Number
         <input
           type="tel"

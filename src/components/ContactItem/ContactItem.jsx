@@ -1,19 +1,19 @@
-import s from './ContactItem.module.css';
+import css from './ContactItem.module.css';
 import { useContext } from 'react';
-import { IsContactsContext } from 'index';
+import { ContactsContext } from 'index';
 import PropTypes from 'prop-types';
 
 export const ContactItem = ({ name, number, id }) => {
-  const { contacts, setContacts } = useContext(IsContactsContext);
+  const { contacts, setContacts } = useContext(ContactsContext);
 
   return (
-    <li className={s.listItem}>
+    <li className={css.listItem}>
       <p>
         {name}: {number}
       </p>
       <button
         type="button"
-        className={s.btnDelete}
+        className={css.btnDelete}
         onClick={() => {
           setContacts(contacts.filter(el => el.id !== id));
         }}
